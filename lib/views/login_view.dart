@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/constants/routes.dart';
 import 'package:notes/helpers/firebase_errors.dart';
+import 'package:notes/helpers/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -63,7 +64,9 @@ class _LoginViewState extends State<LoginView> {
                   (_) => false,
                 );
               } on FirebaseAuthException catch (e) {
-                firebaseError(e.code);
+                firebaseError(context, e.code);
+              } catch (e) {
+                await showErrorDialog(context, e.toString());
               }
             },
             child: const Text("Login"),

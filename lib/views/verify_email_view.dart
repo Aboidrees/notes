@@ -25,7 +25,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               try {
                 await user?.sendEmailVerification();
               } on FirebaseAuthException catch (e) {
-                firebaseError(e.code);
+                firebaseError(context, e.code);
               }
             },
             child: const Text("Send Email Verification"),

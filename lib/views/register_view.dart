@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/constants/routes.dart';
 import 'package:notes/helpers/firebase_errors.dart';
+import 'package:notes/utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -58,7 +59,9 @@ class _RegisterViewState extends State<RegisterView> {
                   password: password,
                 );
               } on FirebaseAuthException catch (e) {
-                firebaseError(e.code);
+                firebaseError(context, e.code);
+              } catch (e) {
+                await showErrorDialog(context, e.toString());
               }
             },
             child: const Text("Register"),

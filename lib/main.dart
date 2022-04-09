@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes/pages/home_page.dart';
 import 'package:notes/views/login_view.dart';
+import 'package:notes/views/notes_view.dart';
 import 'package:notes/views/register_view.dart';
 import 'package:notes/views/verify_email_view.dart';
 
@@ -10,12 +11,13 @@ void main() {
   runApp(
     MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(primaryColor: const Color.fromARGB(255, 124, 10, 43)),
       home: const HomePage(),
       routes: {
         '/login': (context) => const LoginView(),
         '/register': (context) => const RegisterView(),
         '/verify': (context) => const VerifyEmailView(),
+        '/notes': (context) => const NotesView(),
       },
     ),
   );

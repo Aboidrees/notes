@@ -24,6 +24,6 @@ void firebaseError(BuildContext context, String code) async {
       break;
 
     default:
-      await showErrorDialog(context, "Unknown error, contact support!");
+      await showErrorDialog(context, "Error: $code");
   }
 }

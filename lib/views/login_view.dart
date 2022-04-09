@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/helpers/firebase_errors.dart';
@@ -47,20 +45,21 @@ class _LoginViewState extends State<LoginView> {
             obscureText: true,
             enableSuggestions: false,
             autocorrect: false,
-            decoration:
-                const InputDecoration(hintText: "Enter your password here"),
+            decoration: const InputDecoration(hintText: "Enter your password here"),
           ),
           TextButton(
             onPressed: () async {
               final email = _email.text;
               final password = _password.text;
               try {
-                final userCredentials =
-                    await FirebaseAuth.instance.signInWithEmailAndPassword(
+                await FirebaseAuth.instance.signInWithEmailAndPassword(
                   email: email,
                   password: password,
                 );
-                print(userCredentials);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/notes',
+                  (route) => false,
+                );
               } on FirebaseAuthException catch (e) {
                 firebaseError(e.code);
               }

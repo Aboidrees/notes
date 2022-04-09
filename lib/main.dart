@@ -14,10 +14,10 @@ void main() {
       theme: ThemeData(primaryColor: const Color.fromARGB(255, 124, 10, 43)),
       home: const HomePage(),
       routes: {
-        '/login': (context) => const LoginView(),
-        '/register': (context) => const RegisterView(),
-        '/verify': (context) => const VerifyEmailView(),
-        '/notes': (context) => const NotesView(),
+        '/login/': (context) => const LoginView(),
+        '/register/': (context) => const RegisterView(),
+        '/verify/': (context) => const VerifyEmailView(),
+        '/notes/': (context) => const NotesView(),
       },
     ),
   );

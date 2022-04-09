@@ -1,29 +1,29 @@
-// ignore_for_file: avoid_print
+import 'dart:developer' as devtools show log;
 
 void firebaseError(String code) {
   switch (code) {
     case "user-not-found":
-      print("User not found");
+      devtools.log("User not found");
       break;
 
     case "wrong-password":
-      print("Wrong password");
+      devtools.log("Wrong password");
       break;
 
     case "weak-password-found":
-      print("Weak Password");
+      devtools.log("Weak Password");
       break;
 
     case "email-already-in-use":
-      print("This email is already in use");
+      devtools.log("This email is already in use");
       break;
 
     case "invalid-email":
-      print("This email is invalid");
+      devtools.log("This email is invalid");
       break;
 
     default:
-      print("something else happen");
-      print(code);
+      devtools.log("something else happen");
+      devtools.log(code);
   }
 }

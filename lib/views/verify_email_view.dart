@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/constants/routes.dart';
-import 'package:notes/helpers/firebase_errors.dart';
-import 'dart:developer' as devtools show log;
+import 'package:notes/services/auth/auth_exceptions.dart';
+import 'package:notes/services/auth/auth_service.dart';
+import 'package:notes/utilities/show_error_dialog.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({Key? key}) : super(key: key);
@@ -23,12 +23,10 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
           const Text("If you haven't received a verification email yet, press the button below"),
           TextButton(
             onPressed: () async {
-              final user = FirebaseAuth.instance.currentUser;
-              devtools.log(user.toString());
               try {
-                await user?.sendEmailVerification();
-              } on FirebaseAuthException catch (e) {
-                firebaseError(context, e.code);
+                AuthService.firebase().sendEmailVerification();
+              } on GenaricAuthException {
+                showErrorDialog(context, "Can not send verification email");
               }
             },
             child: const Text("Resend Verification Email"),

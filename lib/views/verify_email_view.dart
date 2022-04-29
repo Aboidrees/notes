@@ -25,7 +25,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             onPressed: () async {
               try {
                 AuthService.firebase().sendEmailVerification();
-              } on GenaricAuthException {
+              } on GenericAuthException {
                 showErrorDialog(context, "Can not send verification email");
               }
             },

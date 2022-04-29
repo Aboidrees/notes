@@ -6,18 +6,18 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import "package:path/path.dart" show join;
 
-class NoateService {
+class NoteService {
   Database? _db;
 
   List<DatabaseNote> _notes = [];
 
-  NoateService._sharedInstance();
-  static final NoateService _shared = NoateService._sharedInstance();
-  factory NoateService() => _shared;
+  NoteService._sharedInstance();
+  static final NoteService _shared = NoteService._sharedInstance();
+  factory NoteService() => _shared;
 
-  final _noteStrmController = StreamController<List<DatabaseNote>>.broadcast();
+  final _noteStreamController = StreamController<List<DatabaseNote>>.broadcast();
 
-  Stream<List<DatabaseNote>> get allNotes => _noteStrmController.stream;
+  Stream<List<DatabaseNote>> get allNotes => _noteStreamController.stream;
 
   Future<DatabaseUser> getOrCreateUser({required String email}) async {
     try {
@@ -32,7 +32,7 @@ class NoateService {
   Future<void> _cacheNotes() async {
     final allNotes = await getAllNotes();
     _notes = allNotes.toList();
-    _noteStrmController.add(_notes);
+    _noteStreamController.add(_notes);
   }
 
   Future<DatabaseNote> updateNote({required DatabaseNote note, required String text}) async {
@@ -51,7 +51,7 @@ class NoateService {
 
     _notes.removeWhere((note) => note.id == updatedNote.id);
     _notes.add(updatedNote);
-    _noteStrmController.add(_notes);
+    _noteStreamController.add(_notes);
 
     return updatedNote;
   }
@@ -80,7 +80,7 @@ class NoateService {
     final note = DatabaseNote.fromRow(notes.first);
     _notes.removeWhere((note) => note.id == id);
     _notes.add(note);
-    _noteStrmController.add(_notes);
+    _noteStreamController.add(_notes);
     return note;
   }
 
@@ -89,7 +89,7 @@ class NoateService {
     final db = _getDatabaseOrThrow();
     final numberOfDeletion = await db.delete(noteTable);
     _notes = [];
-    _noteStrmController.add(_notes);
+    _noteStreamController.add(_notes);
     return numberOfDeletion;
   }
 
@@ -104,7 +104,7 @@ class NoateService {
     if (deletedCount == 0) throw CouldNoteDeleteNote();
 
     _notes.removeWhere((note) => note.id == id);
-    _noteStrmController.add(_notes);
+    _noteStreamController.add(_notes);
   }
 
   Future<DatabaseNote> createNote({required DatabaseUser owner}) async {
@@ -132,12 +132,12 @@ class NoateService {
       isSyncedWithCloud: true,
     );
     _notes.add(note);
-    _noteStrmController.add(_notes);
+    _noteStreamController.add(_notes);
 
     return note;
   }
 
-  Future<void> deteteUser({required String email}) async {
+  Future<void> deleteUser({required String email}) async {
     await _ensureDBIsOpen();
     final db = _getDatabaseOrThrow();
     final deletedCount = await db.delete(

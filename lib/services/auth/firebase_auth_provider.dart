@@ -20,12 +20,10 @@ class FirebaseAuthProvider implements AuthProvider {
         email: email,
         password: password,
       );
+
       final user = currentUser;
-      if (user != null) {
-        return user;
-      } else {
-        throw UserNotFoundAuthException();
-      }
+      if (user != null) return user;
+      throw UserNotFoundAuthException();
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "email-already-in-use":
@@ -35,21 +33,17 @@ class FirebaseAuthProvider implements AuthProvider {
         case "weak-password-found":
           throw WeakPasswordAuthException();
         default:
-          throw GenaricAuthException();
+          throw GenericAuthException();
       }
     } catch (_) {
-      throw GenaricAuthException();
+      throw GenericAuthException();
     }
   }
 
   @override
   AuthUser? get currentUser {
     final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      return AuthUser.fromFirebase(user);
-    } else {
-      return null;
-    }
+    return user != null ? AuthUser.fromFirebase(user) : null;
   }
 
   @override
@@ -59,12 +53,11 @@ class FirebaseAuthProvider implements AuthProvider {
         email: email,
         password: password,
       );
+
       final user = currentUser;
-      if (user != null) {
-        return user;
-      } else {
-        throw UserNotFoundAuthException();
-      }
+
+      if (user != null) return user;
+      throw UserNotFoundAuthException();
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "user-not-found":
@@ -74,16 +67,16 @@ class FirebaseAuthProvider implements AuthProvider {
         case "invalid-email":
           throw InvalidEmailAuthException();
         default:
-          throw GenaricAuthException();
+          throw GenericAuthException();
       }
     } catch (_) {
-      throw GenaricAuthException();
+      throw GenericAuthException();
     }
   }
 
   @override
   Future<void> logOut() async {
-    final user = FirebaseAuth.instance.currentUser;
+    final user = currentUser;
     if (user != null) {
       await FirebaseAuth.instance.signOut();
     } else {

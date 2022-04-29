@@ -12,19 +12,19 @@ class NotesView extends StatefulWidget {
 }
 
 class _NotesViewState extends State<NotesView> {
-  late final NoateService _noateService;
+  late final NoteService _noteService;
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
   @override
   void initState() {
-    _noateService = NoateService();
-    _noateService.open();
+    _noteService = NoteService();
+    _noteService.open();
     super.initState();
   }
 
   @override
   void dispose() {
-    _noateService.close();
+    _noteService.close();
     super.dispose();
   }
 
@@ -34,6 +34,10 @@ class _NotesViewState extends State<NotesView> {
       appBar: AppBar(
         title: const Text("Notes"),
         actions: [
+          IconButton(
+            onPressed: () => Navigator.of(context).pushNamed(newNoteRoute),
+            icon: const Icon(Icons.add),
+          ),
           PopupMenuButton<MenuActions>(
             onSelected: (value) async {
               switch (value) {
@@ -53,12 +57,12 @@ class _NotesViewState extends State<NotesView> {
         ],
       ),
       body: FutureBuilder(
-        future: _noateService.getOrCreateUser(email: userEmail),
+        future: _noteService.getOrCreateUser(email: userEmail),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               return StreamBuilder(
-                stream: _noateService.allNotes,
+                stream: _noteService.allNotes,
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:

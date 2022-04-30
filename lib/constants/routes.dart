@@ -3,4 +3,4 @@ const registerRoute = '/register/';
 const verifyEmailRoute = '/verify-email/';
 
 const notesRoute = '/notes/';
-const newNoteRoute = '/notes/create';
+const createOrUpdateNoteRoute = '/notes/edit';

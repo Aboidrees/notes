@@ -15,6 +15,7 @@ void main() {
       title: 'Flutter Demo',
       theme: ThemeData(primaryColor: const Color.fromARGB(255, 124, 10, 43)),
       home: const HomePage(),
+      debugShowCheckedModeBanner: false,
       routes: {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),

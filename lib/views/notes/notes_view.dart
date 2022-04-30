@@ -24,12 +24,6 @@ class _NotesViewState extends State<NotesView> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   _noteService.close();
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +47,10 @@ class _NotesViewState extends State<NotesView> {
               }
             },
             itemBuilder: (context) => const [
-              PopupMenuItem(value: MenuActions.logout, child: Text("Logout")),
+              PopupMenuItem(
+                value: MenuActions.logout,
+                child: Text("Logout"),
+              ),
             ],
           )
         ],
@@ -74,12 +71,7 @@ class _NotesViewState extends State<NotesView> {
                         return NotesListView(
                           notes: allNotes,
                           onDeleteNote: (note) async => await _noteService.deleteNote(id: note.id),
-                          onTap: (note) {
-                            Navigator.of(context).pushNamed(
-                              createOrUpdateNoteRoute,
-                              arguments: note,
-                            );
-                          },
+                          onTap: (note) => Navigator.of(context).pushNamed(createOrUpdateNoteRoute, arguments: note),
                         );
                       } else {
                         return const Center(child: CircularProgressIndicator());

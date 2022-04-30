@@ -11,11 +11,15 @@ class NoteService {
 
   List<DatabaseNote> _notes = [];
 
-  NoteService._sharedInstance();
+  NoteService._sharedInstance() {
+    _noteStreamController = StreamController<List<DatabaseNote>>.broadcast(
+      onListen: () => _noteStreamController.sink.add(_notes),
+    );
+  }
   static final NoteService _shared = NoteService._sharedInstance();
   factory NoteService() => _shared;
 
-  final _noteStreamController = StreamController<List<DatabaseNote>>.broadcast();
+  late final StreamController<List<DatabaseNote>> _noteStreamController;
 
   Stream<List<DatabaseNote>> get allNotes => _noteStreamController.stream;
 
@@ -232,7 +236,7 @@ class DatabaseUser {
         email = map[emailColumn] as String;
 
   @override
-  String toString() => 'person, ID = $id, emai = $email';
+  String toString() => 'person, ID = $id, email = $email';
 
   @override
   bool operator ==(covariant DatabaseUser other) => id == other.id;

@@ -17,6 +17,7 @@ class NotesView extends StatefulWidget {
 class _NotesViewState extends State<NotesView> {
   late final FirebaseCloudStorage _noteService;
   String get userId => AuthService.firebase().currentUser!.id;
+  String get userEmail => AuthService.firebase().currentUser!.email;
 
   @override
   void initState() {
@@ -44,10 +45,13 @@ class _NotesViewState extends State<NotesView> {
                     Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (_) => false);
                   }
                   break;
+                case MenuActions.profile:
+                  break;
               }
             },
-            itemBuilder: (context) => const [
-              PopupMenuItem(value: MenuActions.logout, child: Text("Logout")),
+            itemBuilder: (context) => [
+              PopupMenuItem(value: MenuActions.profile, child: Text(userEmail)),
+              const PopupMenuItem(value: MenuActions.logout, child: Text("Logout")),
             ],
           )
         ],

@@ -33,66 +33,70 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Login")),
-      body: Column(
-        children: [
-          TextField(
-            controller: _email,
-            keyboardType: TextInputType.emailAddress,
-            enableSuggestions: false,
-            autocorrect: false,
-            decoration: const InputDecoration(hintText: "Enter you email here"),
-          ),
-          TextField(
-            controller: _password,
-            obscureText: true,
-            enableSuggestions: false,
-            autocorrect: false,
-            decoration: const InputDecoration(hintText: "Enter your password here"),
-          ),
-          TextButton(
-            onPressed: () async {
-              final email = _email.text;
-              final password = _password.text;
-              try {
-                await AuthService.firebase().logIn(
-                  email: email,
-                  password: password,
-                );
-
-                final user = AuthService.firebase().currentUser;
-
-                if (user?.isEmailVerified ?? false) {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    notesRoute,
-                    (_) => false,
-                  );
-                } else {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    verifyEmailRoute,
-                    (_) => false,
-                  );
-                }
-              } on InvalidEmailAuthException {
-                await showErrorDialog(context, "Invalid email");
-              } on UserNotFoundAuthException {
-                await showErrorDialog(context, "User not found");
-              } on WrongPasswordAuthException {
-                await showErrorDialog(context, "Wrong credentials");
-              } on GenericAuthException {
-                showErrorDialog(context, "Authentication Error");
-              }
-            },
-            child: const Text("Login"),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-              registerRoute,
-              (_) => false,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 100),
+            TextField(
+              controller: _email,
+              keyboardType: TextInputType.emailAddress,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: InputDecoration(hintText: "Enter you email here", border: myInputBorder()),
             ),
-            child: const Text("Not registered yet? Register Here"),
-          ),
-        ],
+            const SizedBox(height: 16),
+            TextField(
+              controller: _password,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: InputDecoration(hintText: "Enter your password here", border: myInputBorder()),
+            ),
+            TextButton(
+              onPressed: () async {
+                final email = _email.text;
+                final password = _password.text;
+                try {
+                  await AuthService.firebase().logIn(email: email, password: password);
+                  final user = AuthService.firebase().currentUser;
+                  if (user?.isEmailVerified ?? false) {
+                    Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (_) => false);
+                  } else {
+                    Navigator.of(context).pushNamedAndRemoveUntil(verifyEmailRoute, (_) => false);
+                  }
+                } on InvalidEmailAuthException {
+                  await showErrorDialog(context, "Invalid email");
+                } on UserNotFoundAuthException {
+                  await showErrorDialog(context, "User not found");
+                } on WrongPasswordAuthException {
+                  await showErrorDialog(context, "Wrong credentials");
+                } on GenericAuthException {
+                  showErrorDialog(context, "Authentication Error");
+                }
+              },
+              child: const Text("Login"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (_) => false),
+              child: const Text("Not registered yet? Register Here"),
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+myInputBorder() {
+  return OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30),
+    borderSide: const BorderSide(
+      color: Colors.grey,
+      style: BorderStyle.solid,
+      width: 3,
+    ),
+  );
 }

@@ -53,8 +53,18 @@ class FirebaseCloudStorage {
     }
   }
 
-  void createNewNote({required String ownerUserId}) async {
-    await notesCollRef.add({kOwnerUserIdFieldName: ownerUserId, kTextFieldName: ''});
+  Future<CloudNote> createNote({required String ownerUserId}) async {
+    final document = await notesCollRef.add({
+      kOwnerUserIdFieldName: ownerUserId,
+      kTextFieldName: '',
+    });
+
+    final createdNote = await document.get();
+    return CloudNote(
+      documentId: createdNote.id,
+      ownerUserId: ownerUserId,
+      text: "",
+    );
   }
 
   factory FirebaseCloudStorage() => _shared;

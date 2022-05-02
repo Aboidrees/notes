@@ -19,7 +19,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       body: Column(
         children: [
           const Text("We've sent you an email verification. Please open it"),
-          const Text("If you did not find the email please chek the junk/spam box"),
+          const Text("If you did not find the email please check the junk/spam box"),
           const Text("If you haven't received a verification email yet, press the button below"),
           TextButton(
             onPressed: () async {

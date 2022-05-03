@@ -71,7 +71,7 @@ class _NotesViewState extends State<NotesView> {
                   onTap: (note) => Navigator.of(context).pushNamed(createOrUpdateNoteRoute, arguments: note),
                 );
               } else {
-                return const Center(child: Text("You have no any Notes"));
+                return const Center(child: CircularProgressIndicator());
               }
             default:
               return const Center(child: CircularProgressIndicator());

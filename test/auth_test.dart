@@ -60,6 +60,13 @@ void main() {
       final user = provider.currentUser;
       expect(user, isNotNull);
     });
+
+    test("Should be able to send reset password email", () async {
+      await provider.sendPasswordReset(toEmail: "foo@bar.com");
+
+      final resetEmailSent = provider.resetEmailSent;
+      expect(resetEmailSent, true);
+    });
   });
 }
 
@@ -68,7 +75,10 @@ class NotInitializedException implements Exception {}
 class MockAuthProvider implements AuthProvider {
   AuthUser? _user;
   var _isInitialized = false;
+  var _resetEmailSent = false;
+
   bool get isInitialized => _isInitialized;
+  bool get resetEmailSent => _resetEmailSent;
 
   @override
   Future<AuthUser> createUser({required String email, required String password}) async {
@@ -111,5 +121,14 @@ class MockAuthProvider implements AuthProvider {
     if (user == null) throw UserNotFoundAuthException();
     const newUser = AuthUser(email: "foo@bar.com", isEmailVerified: true, id: '');
     _user = newUser;
+  }
+
+  @override
+  Future<void> sendPasswordReset({required String toEmail}) async {
+    if (!_isInitialized) throw NotInitializedException();
+    if (!toEmail.contains("@") && !toEmail.contains(".")) throw InvalidEmailAuthException();
+    if (toEmail != "foo@bar.com") throw UserNotFoundAuthException();
+
+    _resetEmailSent = true;
   }
 }

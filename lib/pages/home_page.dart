@@ -4,6 +4,7 @@ import 'package:notes/helpers/loading/loading_screen.dart';
 import 'package:notes/services/auth/bloc/auth_bloc.dart';
 import 'package:notes/services/auth/bloc/auth_event.dart';
 import 'package:notes/services/auth/bloc/auth_state.dart';
+import 'package:notes/views/forgot_password_view.dart';
 import 'package:notes/views/login_view.dart';
 import 'package:notes/views/notes/notes_view.dart';
 import 'package:notes/views/register_view.dart';
@@ -30,6 +31,8 @@ class HomePage extends StatelessWidget {
           return const VerifyEmailView();
         } else if (state is AuthStateLoggedOut) {
           return const LoginView();
+        } else if (state is AuthStateForgotPassword) {
+          return const ForgotPasswordView();
         } else if (state is AuthStateRegistering) {
           return const RegisterView();
         } else {

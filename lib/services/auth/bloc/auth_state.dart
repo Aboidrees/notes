@@ -14,9 +14,18 @@ class AuthStateUninitialized extends AuthState {
 }
 
 class AuthStateRegistering extends AuthState {
-  final Exception exception;
-
+  final Exception? exception;
   const AuthStateRegistering({required this.exception, required bool isLoading}) : super(isLoading: isLoading);
+}
+
+class AuthStateForgotPassword extends AuthState {
+  final Exception? exception;
+  final bool emailSent;
+  const AuthStateForgotPassword({
+    required this.exception,
+    required this.emailSent,
+    required bool isLoading,
+  }) : super(isLoading: isLoading);
 }
 
 class AuthStateLoggedIn extends AuthState {

@@ -5,6 +5,7 @@ import 'package:notes/services/auth/bloc/auth_bloc.dart';
 import 'package:notes/services/auth/bloc/auth_event.dart';
 import 'package:notes/services/auth/bloc/auth_state.dart';
 import 'package:notes/utilities/dialogs/error_dialog.dart';
+import 'package:notes/utilities/styles.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -49,33 +50,49 @@ class _RegisterViewState extends State<RegisterView> {
       },
       child: Scaffold(
         appBar: AppBar(title: const Text("register")),
-        body: Column(
-          children: [
-            TextField(
-              controller: _email,
-              keyboardType: TextInputType.emailAddress,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: const InputDecoration(hintText: "Enter you email here"),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 100),
+                const Text(
+                  "Please, register an account in order to interact with and create notes!",
+                  style: TextStyle(fontSize: 18.0),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: _email,
+                  keyboardType: TextInputType.emailAddress,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  autofocus: true,
+                  decoration: InputDecoration(hintText: "Enter you email here", border: myInputBorder()),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: _password,
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: InputDecoration(hintText: "Enter your password here", border: myInputBorder()),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    context.read<AuthBloc>().add(AuthEventRegister(_email.text, _password.text));
+                  },
+                  child: const Text("Register"),
+                ),
+                TextButton(
+                  onPressed: () => context.read<AuthBloc>().add(const AuthEventLogOut()),
+                  child: const Text("Already registered? Login Here"),
+                ),
+              ],
             ),
-            TextField(
-              controller: _password,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: const InputDecoration(hintText: "Enter your password here"),
-            ),
-            TextButton(
-              onPressed: () async {
-                context.read<AuthBloc>().add(AuthEventRegister(_email.text, _password.text));
-              },
-              child: const Text("Register"),
-            ),
-            TextButton(
-              onPressed: () => context.read<AuthBloc>().add(const AuthEventLogOut()),
-              child: const Text("Already registered? Login Here"),
-            ),
-          ],
+          ),
         ),
       ),
     );

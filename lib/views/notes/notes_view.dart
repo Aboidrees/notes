@@ -65,6 +65,16 @@ class _NotesViewState extends State<NotesView> {
             case ConnectionState.active:
               if (snapshot.hasData) {
                 final allNotes = snapshot.data as Iterable<CloudNote>;
+
+                if (allNotes.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      "You did note add any notes yet..!",
+                      style: TextStyle(color: Colors.grey, fontSize: 18.0),
+                    ),
+                  );
+                }
+
                 return NotesListView(
                   notes: allNotes,
                   onDeleteNote: (note) async => await _noteService.deleteNote(documentId: note.documentId),

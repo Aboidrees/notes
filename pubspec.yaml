@@ -36,6 +36,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  google_fonts: ^2.3.2
   path: ^1.8.0
   path_provider: ^2.0.9
   share_plus: ^4.0.4
